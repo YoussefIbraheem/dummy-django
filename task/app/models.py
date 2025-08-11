@@ -5,10 +5,6 @@ from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 
 
-# =======================
-#  Task 1: Basic Models
-# =======================
-
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
@@ -48,10 +44,6 @@ class Author(models.Model):
         return self.user.get_full_name() or self.user.username
 
 
-# ===============================
-#  Task 2: Advanced Article Model
-# ===============================
-
 class PublishedManager(models.Manager):
     """Custom manager to filter published articles."""
     def get_queryset(self):
@@ -59,36 +51,33 @@ class PublishedManager(models.Manager):
 
 
 class Article(models.Model):
-    class Status(models.TextChoices):
-        DRAFT = "DRAFT", "Draft"
-        PUBLISHED = "PUBLISHED", "Published"
-        ARCHIVED = "ARCHIVED", "Archived"
+    
+    STATUS_CHOICES = [
+        ("draft", "Draft"),
+        ("published", "Published"),
+        ("archived", "Archived"),]
 
-    # Basic Fields
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     content = models.TextField()
     excerpt = models.TextField(max_length=300, blank=True)
     featured_image = models.ImageField(upload_to="articles/", blank=True)
 
-    # Relationships
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
 
-    # Status & Publishing
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     is_featured = models.BooleanField(default=False)
     published_at = models.DateTimeField(null=True, blank=True)
 
-    # Metadata
+
     view_count = models.PositiveIntegerField(default=0)
     reading_time = models.PositiveIntegerField(default=1)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # Managers
     objects = models.Manager()  # Default manager
     published = PublishedManager()  # Custom manager
 
@@ -103,10 +92,6 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-
-    # ================
-    # Custom Methods
-    # ================
 
     def get_absolute_url(self):
         return reverse("article_detail", kwargs={"slug": self.slug})
