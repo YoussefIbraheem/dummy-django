@@ -52,10 +52,10 @@ class PublishedManager(models.Manager):
 
 class Article(models.Model):
     
-    STATUS_CHOICES = [
-        ("draft", "Draft"),
-        ("published", "Published"),
-        ("archived", "Archived"),]
+    class Status(models.TextChoices):
+        DRAFT = "draft", "Draft"
+        PUBLISHED = "published", "Published"
+        ARCHIVED = "archived", "Archived"
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
@@ -67,7 +67,7 @@ class Article(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
 
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(max_length=10, choices=Status , default=Status.DRAFT)
     is_featured = models.BooleanField(default=False)
     published_at = models.DateTimeField(null=True, blank=True)
 
