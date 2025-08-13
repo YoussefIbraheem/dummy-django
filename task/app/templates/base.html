@@ -1,0 +1,23 @@
+
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Blog{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            {% comment %} <a href="{% url 'article_list' %}">Home</a> {% endcomment %}
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; {{ now|date:"Y" }} {% trans "My Blog" %}</p>
+    </footer>
+</body>
+</html>

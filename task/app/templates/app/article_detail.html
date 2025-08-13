@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <h1>{{ article.title }}</h1>
+    <p><em>By {{ article.author.name }} in {{ article.category.name }} | {{ article.published_date|date:"F j, Y" }}</em></p>
+    <p>Views: {{ article.view_count }}</p>
+    <hr>
+    <div>{{ article.content|safe }}</div>
+</article>
+{% endblock %}
