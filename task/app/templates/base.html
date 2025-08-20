@@ -6,18 +6,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Blog{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav>
-            {% comment %} <a href="{% url 'article_list' %}">Home</a> {% endcomment %}
-        </nav>
-    </header>
-    <main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">My Blog</a>
+            <div>
+                <a class="nav-link d-inline text-light" href="{% url 'home' %}">Articles</a>
+                <a class="nav-link d-inline text-light" href="{% url 'register_article' %}">Add Article</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
-    <footer>
-        <p>&copy; {{ now|date:"Y" }} {% trans "My Blog" %}</p>
+
+    <footer class="bg-light py-3 text-center mt-5">
+        <p class="mb-0">&copy; {{ now|date:"Y" }} My Blog</p>
     </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
