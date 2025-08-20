@@ -13,16 +13,24 @@ def article_list(request):
 
 
 def article_detail(request, slug):
-    article = Article.objects.get(slug=slug)
+    article = Article.objects.filter(slug=slug).first()
     
     return render(request, 'app/article_detail.html', {'article': article})
 
 def register_article(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = ArticleForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("article_list")  # Redirect after successful creation
+            title = form.cleaned_data['title']
+            content = form.cleaned_data['content']
+            author = form.cleaned_data['author']
+            
+            article = Article(title=title, content=content, author=author)
+            article.save()
+            
+            logger.info(f"Article '{title}' created successfully.")
+            return redirect('home')
     else:
         form = ArticleForm()
-    return render(request, "blog/article_form.html", {"form": form})
+    
+    return render(request, 'app/article_form.html', {'form': form})

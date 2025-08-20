@@ -1,30 +1,26 @@
-{% extends "base.html" %}
-{% block title %}Register Article{% endblock %}
+{% extends "base.html" %} 
+{% load i18n %}
+{% block title %}Register Article{% endblock %} 
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Register New Article</h2>
-    <form method="post" novalidate>
-        {% csrf_token %}
+  <h2>Register New Article</h2>
+  <form method="post" action="{% url 'register_article' %}">
+    {% csrf_token %} 
+        {% for field in form %}
         <div class="mb-3">
-            {{ form.title.label_tag }} {{ form.title }}
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger">
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p> 
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-        <div class="mb-3">
-            {{ form.excerpt.label_tag }} {{ form.excerpt }}
-        </div>
-        <div class="mb-3">
-            {{ form.content.label_tag }} {{ form.content }}
-        </div>
-        <div class="mb-3">
-            {{ form.author.label_tag }} {{ form.author }}
-        </div>
-        <div class="mb-3">
-            {{ form.category.label_tag }} {{ form.category }}
-        </div>
-        <div class="mb-3">
-            {{ form.status.label_tag }} {{ form.status }}
-        </div>
-        <button type="submit" class="btn btn-primary">Save Article</button>
-    </form>
+        {% endfor %}
+    <button type="submit" class="btn btn-primary">Save Article</button>
+  </form>
 </div>
 {% endblock %}
