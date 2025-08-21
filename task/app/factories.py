@@ -1,5 +1,5 @@
 from faker import Faker
-from app.models import Category, Tag
+from app.models import Category, Tag , Author
 from django.contrib.auth.models import User
 from slugify import slugify
 
@@ -60,7 +60,6 @@ class ArticleFactory:
             "title": kwargs.get("title", self.faker.sentence()),
             "content": kwargs.get("content", self.faker.text(max_nb_chars=500)),
             "slug": kwargs.get("slug", slugify(kwargs.get("title", self.faker.sentence()))),
-            "author": kwargs.get("author", User.objects.first()),
+            "author": kwargs.get("author", Author.objects.first()),
             "category": kwargs.get("category", Category.objects.first()),
-            "tags": kwargs.get("tags", Tag.objects.all()[:3]),
         }

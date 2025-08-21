@@ -14,7 +14,8 @@ def article_list(request):
 
 def article_detail(request, slug):
     article = Article.objects.filter(slug=slug).first()
-    
+    article.view_count += 1
+    article.save()    
     return render(request, 'app/article_detail.html', {'article': article})
 
 def register_article(request):
